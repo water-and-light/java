@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.demo01.dao.GoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.study.demo01.pojo.Goods" >
+    <id column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_price" property="goodsPrice" jdbcType="INTEGER" />
+    <result column="goods_image" property="goodsImage" jdbcType="VARCHAR" />
+    <result column="goods_inventory" property="goodsInventory" jdbcType="INTEGER" />
+    <result column="goods_modifiedtime" property="goodsModifiedtime" jdbcType="TIMESTAMP" />
+   	<association property="goodsType" javaType="goodsType"
+   	select="com.study.demo01.dao.GoodsTypeMapper.selectByPrimaryKey" column="goods_type_id"
+   	></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    goods_id, goods_name, goods_price, goods_image, goods_inventory, goods_type_id, goods_modifiedtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </select>
+  <select id="listGoodsByNameOrPrice" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+    where goods_price like #{condition,jdbcType=INTEGER} or goods_name like #{condition,jdbcType=VARCHAR}
+  </select>
+  <select id="listAllGoods" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from goods
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.study.demo01.pojo.Goods" >
+    insert into goods (goods_id, goods_name, goods_price, 
+      goods_image, goods_inventory, goods_type_id, 
+      goods_modifiedtime)
+    values (#{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=INTEGER}, 
+      #{goodsImage,jdbcType=VARCHAR}, #{goodsInventory,jdbcType=INTEGER}, #{goodsType.typeId,jdbcType=INTEGER}, 
+      #{goodsModifiedtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.study.demo01.pojo.Goods" >
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsPrice != null" >
+        goods_price,
+      </if>
+      <if test="goodsImage != null" >
+        goods_image,
+      </if>
+      <if test="goodsInventory != null" >
+        goods_inventory,
+      </if>
+      <if test="goodsType.typeId != null" >
+        goods_type_id,
+      </if>
+      <if test="goodsModifiedtime != null" >
+        goods_modifiedtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null" >
+        #{goodsPrice,jdbcType=INTEGER},
+      </if>
+      <if test="goodsImage != null" >
+        #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsInventory != null" >
+        #{goodsInventory,jdbcType=INTEGER},
+      </if>
+      <if test="goodsType.typeId != null" >
+        #{goodsType.typeId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsModifiedtime != null" >
+        #{goodsModifiedtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.study.demo01.pojo.Goods" >
+    update goods
+    <set >
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null" >
+        goods_price = #{goodsPrice,jdbcType=INTEGER},
+      </if>
+      <if test="goodsImage != null" >
+        goods_image = #{goodsImage,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsInventory != null" >
+        goods_inventory = #{goodsInventory,jdbcType=INTEGER},
+      </if>
+      <if test="goodsType.typeId != null" >
+        goods_type_id = #{goodsType.typeId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsModifiedtime != null" >
+        goods_modifiedtime = #{goodsModifiedtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.study.demo01.pojo.Goods" >
+    update goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=INTEGER},
+      goods_image = #{goodsImage,jdbcType=VARCHAR},
+      goods_inventory = #{goodsInventory,jdbcType=INTEGER},
+      goods_type_id = #{goodsType.typeId,jdbcType=INTEGER},
+      goods_modifiedtime = #{goodsModifiedtime,jdbcType=TIMESTAMP}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+</mapper>
