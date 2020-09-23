@@ -1,15 +1,15 @@
 package com.study.demo01.web;
 
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.study.demo01.pojo.Student;
@@ -53,6 +53,26 @@ public class StuController {
 	}
 	@RequestMapping("/savestu")
 	public Boolean saveStudent(@RequestBody Student student) {
-		return cardService.updateStudentSelective(student);
+		if(student.getStuId()==null) {
+			return cardService.addStudentSelective(student);
+		} else {
+			return cardService.updateStudentSelective(student);
+		}
+		
 	}
+	@RequestMapping("/deletestu")
+	public Boolean deleteStudent(Integer stuId) {
+		return cardService.deleteStudentById(stuId);
+	}
+	@RequestMapping("/deletestuselected")
+	public Boolean deleteSelectedStudent(Integer[] stuIds) {
+		Arrays.stream(stuIds).forEach(System.out::println);
+		return cardService.deleteSelectedStudentByIds(stuIds);
+	}
+	@RequestMapping("/listStuByNameOrNo")
+	public List<Student> listStuByNameOrNo(String condition){
+		cardService.listStuByNameOrNo(condition).stream().forEach(System.out::println);
+		return cardService.listStuByNameOrNo(condition);
+	}
+	
 }

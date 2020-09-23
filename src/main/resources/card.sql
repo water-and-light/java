@@ -36,33 +36,6 @@ insert into student(stu_no,stu_name,stu_login ,stu_passwd ,stu_phone,stu_remain,
 select * from student where stu_name REGEXP '^张三[1-9]{0,1}$';
 select count(stu_id) from student where stu_name REGEXP '^张三[1-9]{0,2}$';
 	
-drop table if exists detailtype; 
-
-/**费用类型**/
-create table if not exists detailtype(
-	type_id int not null primary key auto_increment,
-	type_name varchar(20) not null
-);
-insert into detailtype(type_name) values('充值');
-insert into detailtype(type_name) values('消费');
-
-/**费用**/
-drop table if exists detail;
-create table if not exists detail(
-	detail_id int not null primary key auto_increment,
-	detail_stuserial char(36) unique not null,
-	detail_time datetime,
-	detail_money int,
-	detail_title varchar(60),
-	stu_id int,
-	type_id int
-);
-
-insert into detail(detail_stuserial,detail_time,detail_money,detail_title,stu_id,type_id)
-	values('ea986ed0-f523-4bca-bedb-9b4357253e20',now(),10,'饮食',1,2);
-insert into detail(detail_stuserial,detail_time,detail_money,detail_title,stu_id,type_id)
-	values('8598cdd0-611d-48f7-b338-64defbb60011',now(),20,'娱乐',1,2);
-	
 /**用户**/
 drop table if exists userinfo;
 create table if not exists userinfo (
@@ -73,4 +46,36 @@ create table if not exists userinfo (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 insert into userinfo(user_name,user_login,user_passwd) values
-('张三','zhangsan','8C7E1F3B1B787EC9F24FCC01E243E072');
+('张三','admin','8C7E1F3B1B787EC9F24FCC01E243E072');
+
+/**商品**/
+drop table if exists goods;
+create table if not exists goods(
+goods_id int AUTO_INCREMENT primary key,
+goods_name varchar(50) not null,
+goods_price int not null ,
+goods_image varchar(100) not null,
+goods_inventory int not null,
+goods_type_id int not null,
+goods_modifiedtime timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+insert into goods(goods_name,goods_price,goods_image,goods_inventory,goods_type_id) values 
+('华为/HUAWEI P40 6GB+128GB 亮黑色',4188,'http://127.0.0.1:9000/goods/b7a39258a56c411089177135c8dffc61.jpg',100,1);
+
+/**商品种类**/
+drop table if exists goodstype;
+create table if not exists goodstype(
+type_id int AUTO_INCREMENT primary key,
+type_name varchar(20) not null
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+insert into goodstype (type_name) values ('手机');
+insert into goodstype (type_name) values ('笔记本');
+
+/**购物车**/
+drop table if exists shoppingcart;
+create table if not exists shoppingcart(
+cart_id int AUTO_INCREMENT primary key,
+student_id int not null,
+goods_id int not null,
+goods_num int not null
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

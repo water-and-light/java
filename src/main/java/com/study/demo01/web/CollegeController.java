@@ -19,6 +19,7 @@ public class CollegeController {
 	@RequestMapping("/getcollegelist")
 	public List<College> listAllCollege(){
 		List<College> collegeList=cardService.listAllCollege();
+		collegeList.stream().forEach(System.out::println);
 		return collegeList;
 	}
 }

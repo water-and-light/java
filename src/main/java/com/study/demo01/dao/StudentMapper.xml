@@ -30,6 +30,12 @@
     from student
     where stu_id = #{stuId,jdbcType=INTEGER}
   </select>
+  <select id="listStuByNameOrNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where stu_no like #{condition,jdbcType=CHAR} or stu_name like #{condition,jdbcType=VARCHAR}
+  </select>
   <select id="listAllStu" resultMap="StuResultMap" >
     select 
     stu_id, stu_no, stu_name,stu_phone,stu_remain

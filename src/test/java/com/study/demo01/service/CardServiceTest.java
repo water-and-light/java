@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.study.demo01.pojo.Goods;
 import com.study.demo01.pojo.Student;
 import com.study.demo01.pojo.UserInfo;
 
@@ -25,5 +26,10 @@ public class CardServiceTest {
 		for (Student student : list) {
 			System.out.println(student);
 		}
+	}
+	@Test
+	public void testListAllGoods() {
+		List<Goods> list=cardService.listAllGoods();
+		list.stream().forEach(System.out::println);;
 	}
 }

@@ -19,4 +19,6 @@ public interface StudentMapper {
     int updateByPrimaryKeySelective(Student record);
 
     int updateByPrimaryKey(Student record);
+    
+    List<Student> listStuByNameOrNo(String condition);
 }

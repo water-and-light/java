@@ -11,7 +11,7 @@ spring:
       suffix: .jsp
       
 mybatis:
-  type-aliases-package: com.study.demo01.pojo
+  type-aliases-package: com.study
 
 server:
   port: 8888
