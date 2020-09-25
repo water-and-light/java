@@ -3,6 +3,8 @@ package com.study.demo01.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.study.demo01.pojo.Student;
 
 public interface StudentMapper {
@@ -21,4 +23,6 @@ public interface StudentMapper {
     int updateByPrimaryKey(Student record);
     
     List<Student> listStuByNameOrNo(String condition);
+    
+    Student verifyStudentByLoginAndPasswd(@Param("stuLogin")String stuLogin,@Param("stuPasswd")String stuPasswd);
 }

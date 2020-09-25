@@ -30,6 +30,12 @@
     from student
     where stu_id = #{stuId,jdbcType=INTEGER}
   </select>
+  <select id="verifyStudentByLoginAndPasswd" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where stu_login = #{stuLogin,jdbcType=VARCHAR} and stu_passwd = #{stuPasswd,jdbcType=VARCHAR}
+  </select>
   <select id="listStuByNameOrNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />

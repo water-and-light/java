@@ -4,8 +4,10 @@
   <resultMap id="BaseResultMap" type="com.study.demo01.pojo.ShoppingCart" >
     <id column="cart_id" property="cartId" jdbcType="INTEGER" />
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
-    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
     <result column="goods_num" property="goodsNum" jdbcType="INTEGER" />
+    <association property="goods" javaType="goods"
+    select="com.study.demo01.dao.GoodsMapper.selectByPrimaryKey" column="goods_id"
+    ></association>
   </resultMap>
   <sql id="Base_Column_List" >
     cart_id, student_id, goods_id, goods_num
@@ -16,6 +18,12 @@
     from shoppingcart
     where cart_id = #{cartId,jdbcType=INTEGER}
   </select>
+  <select id="listGoodsListByStuId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shoppingcart
+    where student_id = #{stuId,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from shoppingcart
     where cart_id = #{cartId,jdbcType=INTEGER}
@@ -23,7 +31,7 @@
   <insert id="insert" parameterType="com.study.demo01.pojo.ShoppingCart" >
     insert into shoppingcart (cart_id, student_id, goods_id, 
       goods_num)
-    values (#{cartId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
+    values (#{cartId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, #{goods.goodsId,jdbcType=INTEGER}, 
       #{goodsNum,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.study.demo01.pojo.ShoppingCart" >
@@ -35,7 +43,7 @@
       <if test="studentId != null" >
         student_id,
       </if>
-      <if test="goodsId != null" >
+      <if test="goods.goodsId != null" >
         goods_id,
       </if>
       <if test="goodsNum != null" >
@@ -49,8 +57,8 @@
       <if test="studentId != null" >
         #{studentId,jdbcType=INTEGER},
       </if>
-      <if test="goodsId != null" >
-        #{goodsId,jdbcType=INTEGER},
+      <if test="goods.goodsId != null" >
+        #{goods.goodsId,jdbcType=INTEGER},
       </if>
       <if test="goodsNum != null" >
         #{goodsNum,jdbcType=INTEGER},
@@ -63,8 +71,8 @@
       <if test="studentId != null" >
         student_id = #{studentId,jdbcType=INTEGER},
       </if>
-      <if test="goodsId != null" >
-        goods_id = #{goodsId,jdbcType=INTEGER},
+      <if test="goods.goodsId != null" >
+        goods_id = #{goods.goodsId,jdbcType=INTEGER},
       </if>
       <if test="goodsNum != null" >
         goods_num = #{goodsNum,jdbcType=INTEGER},
@@ -75,7 +83,7 @@
   <update id="updateByPrimaryKey" parameterType="com.study.demo01.pojo.ShoppingCart" >
     update shoppingcart
     set student_id = #{studentId,jdbcType=INTEGER},
-      goods_id = #{goodsId,jdbcType=INTEGER},
+      goods_id = #{goods.goodsId,jdbcType=INTEGER},
       goods_num = #{goodsNum,jdbcType=INTEGER}
     where cart_id = #{cartId,jdbcType=INTEGER}
   </update>
